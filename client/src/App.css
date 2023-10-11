@@ -1,0 +1,30 @@
+.sitenav {
+
+    background-color: #1a1111;
+    min-height: 70px;
+    align-items: center;
+
+
+}
+
+.ic-bosluk {
+
+    padding: 15px;
+}
+
+nav .nav-item {
+    margin: 7px;
+}
+
+nav a.active {
+
+    text-decoration: none;
+    color: white;
+}
+
+nav a.active::before {
+
+    content: "> ";
+    color: red;
+
+}
