@@ -4,9 +4,47 @@ const rotuer = express.Router()
 
 // hash library
 const bcrpyt = require('bcrypt')
-
+// token
+const jwt = require('jsonwebtoken')
 // UserSchema
 const UserSchema = require('../database/Models/UserModel')
+
+
+// bu router tokeni çözer ve user bilgilerini cliente geri gönderir
+rotuer.get("/decode", async (request, response) => {
+
+      try {
+
+        const { token } = request.query
+
+        if (token) {
+
+        // tokeni çöz
+        const user = jwt.verify(token, process.env['TOKEN_KEY'])
+
+        return response.status(200).json({ data: user })
+
+        } else {
+
+         // token yoksa
+         return response.status(400).json({ data: "Token belirtilmedi."})
+        }
+        
+      } catch (error) {
+
+        let statusCode = 500;
+
+        console.log("[/decode/token] error:", error)
+
+        if (error.name === "JsonWebTokenError") {
+
+             statusCode = 400
+        }
+      
+        response.status(statusCode).json({ message: error})
+      }
+
+})
 
 
 // BU router userleri giriş yaptırmak ile görevlidir.
@@ -29,7 +67,18 @@ rotuer.post("/login", async (request, response) => {
                 if (correctPassword) {
 
                         // useri login et
-                        return response.status(200).json({ message: "Başarılı", data: user})
+                        // passaportla
+                        const passport = {
+
+                          user_id: user._id,
+                          username: user.username,
+                          roles: user.roles,
+                          email: user.email
+                            
+                        }
+                        // gecis izni ver
+                        const token = jwt.sign(passport, process.env['TOKEN_KEY'])
+                        return response.status(200).json({ message: "Başarılı", data: token})
 
                 } else {
 

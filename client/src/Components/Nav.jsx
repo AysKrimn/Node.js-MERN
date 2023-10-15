@@ -1,8 +1,16 @@
 import Nav from 'react-bootstrap/Nav';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { AuthProvider } from '../Context/UserContext';
+import { useContext } from 'react';
+
 
 
 function Navbar() {
+
+  const { user } = useContext(AuthProvider)
+  console.log("NAVDAKİ USER:", user)
+
   return (
 
     // nav.item = div
@@ -15,9 +23,33 @@ function Navbar() {
       <NavLink  to="/not">Test</NavLink>
     </Nav.Item>
 
-    <NavLink className="ms-auto ic-bosluk" to="/login">
-        Giriş Yap
-    </NavLink>
+   
+
+    {
+        user === null 
+        ?
+        <NavLink className="ms-auto ic-bosluk" to="/login">
+                Giriş Yap
+        </NavLink> 
+
+        :
+            <Dropdown className='ms-auto ic-bosluk'>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                 {user.username}
+                </Dropdown.Toggle>
+          
+                <Dropdown.Menu>
+
+                  <Dropdown.Item>
+                        <Link className='text-danger' to="?">Çıkış Yap</Link>
+                  </Dropdown.Item>
+                 
+                </Dropdown.Menu>
+
+            </Dropdown>
+
+    }
+
 
   </Nav>
   );

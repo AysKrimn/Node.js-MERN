@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { base_api_url } from '../shared'
+import { AuthProvider } from '../Context/UserContext'
+
 
 
 export default function Login() {
@@ -34,6 +36,13 @@ export default function Login() {
 
             setError(response.message)
 
+        } else if (request.status === 200) {
+
+                // localstorege token gir
+                localStorage.setItem("access_token", response.data)
+                // dashboarda yönlendir
+                window.location = "/"
+
         }
 
   }
@@ -44,7 +53,7 @@ export default function Login() {
     
     <>
     
-    <div className="container mt-5">
+
 
     <div className="w-50">
 
@@ -85,7 +94,6 @@ export default function Login() {
 
     </div>
 
-    </div>
     
     </>
   )

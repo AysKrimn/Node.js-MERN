@@ -1,8 +1,5 @@
 const mongoose = require('mongoose')
 
-
-
-
 // user modelinin temelini at
 const UserSchema = new mongoose.Schema({
 

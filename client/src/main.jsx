@@ -8,10 +8,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 
 
+// User Management System 
+import UserContext from './Context/UserContext.jsx';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
 
   <BrowserRouter>
-      <App />
+  
+      <UserContext>
+             <App />
+      </UserContext>
+
   </BrowserRouter>
 
 )

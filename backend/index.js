@@ -17,6 +17,7 @@ app.use(cors())
 // APIS
 const BASE_API_URL = "/api/v1/"
 const userAPI = require('./API/user')
+const tweetAPI = require('./API/tweet')
 
 // anasayfaya istek geldiğinde
 app.get('/', (request, response) => {
@@ -27,6 +28,7 @@ app.get('/', (request, response) => {
 
 // api route middlewares
 app.use(BASE_API_URL, userAPI) // /api/v1/all
+app.use(BASE_API_URL, tweetAPI) // /api/v1/tweets
 
 // run
 app.listen(PORT, () => {

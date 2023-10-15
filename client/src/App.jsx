@@ -11,8 +11,13 @@ import Test from './Pages/Test'
 import Register from './Pages/Register'
 
 
-function App() {
 
+// layouts
+import LoadData from './Layouts/LoadData'
+
+
+
+function App() {
 
   return (
     <>
@@ -21,11 +26,19 @@ function App() {
       
       <Routes>
 
-            <Route path='/' element={<HomePage></HomePage>}></Route>
-            <Route path='/test' element={<Test></Test>}></Route>
-            <Route path='/login' element={<Login></Login>}></Route>
-            <Route path='/register' element={<Register></Register>}></Route>
+            <Route element={<LoadData></LoadData>}>
+
+
+                    <Route path='/' element={<HomePage></HomePage>}></Route>
+                    <Route path='/test' element={<Test></Test>}></Route>
+                    <Route path='/login' element={<Login></Login>}></Route>
+                    <Route path='/register' element={<Register></Register>}></Route>
+
+            </Route>
+
+
       </Routes>
+
     </>
   )
 }
