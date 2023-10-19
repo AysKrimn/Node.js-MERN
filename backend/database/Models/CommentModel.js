@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 
-const TweetSchema = new mongoose.Schema({
+const CommentSchema = new mongoose.Schema({
 
     // mongodb _id
 
@@ -12,16 +12,19 @@ const TweetSchema = new mongoose.Schema({
         required: true
     },
 
-    content: {
+    // reverse relationship
+    post: {
 
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: "Tweets",
         required: true
     },
 
-    comments: [{
-        type: mongoose.Schema.ObjectId,
-        ref: "Comments"
-    }]
+    message: {
+
+        type: String,
+        required: true
+    }
 
 
 },
@@ -33,7 +36,7 @@ const TweetSchema = new mongoose.Schema({
 
 
 
-const tweet_model = mongoose.model("Tweets", TweetSchema)
+const comment_model = mongoose.model("Comments", CommentSchema)
 
 // Modül olarak dışarı çıkart.
-module.exports = tweet_model
+module.exports = comment_model

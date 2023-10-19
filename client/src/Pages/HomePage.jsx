@@ -3,8 +3,18 @@ import React, { useContext, useEffect, useState } from 'react'
 
 // MODAL COMPONENT
 import CreateTweetModal from '../Components/CreateTweetModal'
+import CreateComment from '../Components/CreateComment'
+
 import { AuthProvider } from '../Context/UserContext'
 import { base_api_url } from '../shared'
+import { Link } from 'react-router-dom'
+
+
+// function
+const create_string = () => {
+
+      return "---> Devamını okuyayayım"
+}
 
 export default function HomePage() {
 
@@ -54,10 +64,16 @@ export default function HomePage() {
 
              return <div key={post._id} className="col-12 mb-5">
 
+                <Link to={`/tweets/${post._id}`}>
+                   <p>{create_string()}</p>
+                </Link>
+          
                 <h3>{post.author.username}</h3>
 
                 <div className='card-body'>
                     <p>{post.content}</p>
+
+                    <CreateComment  tweet = {post} ></CreateComment>
                 </div>
 
               </div>
