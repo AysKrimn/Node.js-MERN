@@ -5,6 +5,9 @@ const cors = require('cors');
 const PORT = process.env['PORT']
 // app isntance
 const app = express()
+// statik dosyaları gönder (resim vb)
+app.use("/uploads", express.static('uploads'))
+
 // gelen JSON isteklerini parçala ve body'e atama yap
 // app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

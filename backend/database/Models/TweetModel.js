@@ -18,6 +18,11 @@ const TweetSchema = new mongoose.Schema({
         required: true
     },
 
+    attachment: {
+
+        type: String
+    },
+
     comments: [{
         type: mongoose.Schema.ObjectId,
         ref: "Comments"

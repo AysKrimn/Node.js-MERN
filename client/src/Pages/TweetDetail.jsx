@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { base_api_url } from '../shared'
+import { base_api_url, base_media_url } from '../shared'
 import { useParams } from 'react-router-dom'
 
 
@@ -107,6 +107,23 @@ if (errors.error && errors.error === true) {
                                     <div>
                                         <p>{tweet.content}</p>
                                     </div>
+
+                                    {  
+                    
+                                    tweet.attachment 
+                                    
+                                    ? 
+
+                                    <div className='image-container'>
+
+                                        <img src={`${base_media_url}/${tweet.attachment}`} alt={tweet._id} />
+                                    </div>
+
+                                    : null
+                                
+                                }
+
+                                    
                     </div>
 
                 </div>

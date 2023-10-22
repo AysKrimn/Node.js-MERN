@@ -13,6 +13,7 @@ function CreateTweetModal(props) {
   const {user} = props
   const [show, setShow] = useState(false);
   const [input, setInput] = useState("")
+  const [file, setFile] = useState("")
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -21,15 +22,21 @@ function CreateTweetModal(props) {
 
   const create_tweet = async () => {
 
+    const uploadedFile = new FormData()
+    // key/value olacak şekilde gir
+    uploadedFile.append("content", input)
+    // resimleride gönder
+    uploadedFile.append("attachment", file)
+
     const request = await fetch(`${base_api_url}/tweets/create`, {
 
         method: "POST",
         headers: {
-            "Content-type": "application/json",
+  
             "Authorization": "Bearer " + localStorage.getItem('access_token')
         },
 
-        body: JSON.stringify({ content: input })
+        body: uploadedFile
 
     })
 
@@ -67,6 +74,14 @@ function CreateTweetModal(props) {
             onChange={(e) => setInput(e.target.value)}
             
             > </textarea>
+
+            <div className="mt-3">
+
+                <input className='form-control' type="file" 
+                onChange={e => setFile(e.target.files[0])}
+                />
+
+            </div>
 
         </Modal.Body>
         

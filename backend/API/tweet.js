@@ -5,10 +5,12 @@ const router = express.Router()
 // Schemas
 const TweetSchema = require('../database/Models/TweetModel')
 
-
+// resim depolama stretajisi
+const { useImageConfig, handleImageValidation } = require('../ImageService/handle_images')
 
 // protection
 const { getAccessToRoute } = require('../authentication/decodeToken')
+
 
 router.get('/tweets', async (request, response) => {
 
@@ -66,22 +68,44 @@ router.get('/tweets/:tweetId', async (request, response) => {
 
 // güvenlik mekanizmasını aşağıdaki tüm endpointler için devreye sok
 router.use(getAccessToRoute)
-router.post('/tweets/create', async (request, response) => {
+router.post('/tweets/create', useImageConfig.single('attachment'), async (request, response) => {
 
     console.log("tweet oluşturma endpointinde user:", request.user)
     // veritabanı bağlantısı kur ve mevcut olan tüm tweetleri al
     try {
         
         const { content } = request.body
+      
 
         if (!content) {
 
             response.status(400).json({ message: "Tweet içeriği zorunludur."})
         }
 
-        // tweet oluştur
-        const tweet = await TweetSchema.create({ author: request.user.user_id, content: content })
+        // tweet oluştur ancak henüz veritabanına kayıt etme
+        const tweet = new TweetSchema({ author: request.user.user_id, content: content })
 
+        // eğer resim varsa
+        if (request.file) {
+            
+        // resim validasyondan geçiyor mu?
+        const validImage = handleImageValidation(request.file)
+
+        if (validImage) {
+
+            tweet.attachment = request.file.path
+
+        } else {
+
+            return response.status(400).json({ message: "Lütfen geçerli bir resim uzantısı giriniz."})
+        }
+
+        }
+
+
+        // oluşturulan tweeti artık kaydet
+        await tweet.save()
+        
         response.status(200).json({ data: tweet})
 
     } catch (error) {

@@ -7,6 +7,29 @@
 
 }
 
+.image-container {
+
+    width: 50%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.image-container img {
+
+    width: 100%;
+}
+
+.left-side-bar {
+
+    border-right: 1px solid #999090;
+    min-height: 100vh;
+}
+
+.right-feed {
+
+    padding-left: 3rem !important;
+}
+
 .ic-bosluk {
 
     padding: 15px;

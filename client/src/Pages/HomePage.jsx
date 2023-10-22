@@ -6,7 +6,7 @@ import CreateTweetModal from '../Components/CreateTweetModal'
 import CreateComment from '../Components/CreateComment'
 
 import { AuthProvider } from '../Context/UserContext'
-import { base_api_url } from '../shared'
+import { base_api_url, base_media_url } from '../shared'
 import { Link } from 'react-router-dom'
 
 
@@ -72,6 +72,21 @@ export default function HomePage() {
 
                 <div className='card-body'>
                     <p>{post.content}</p>
+
+                    {  
+                    
+                      post.attachment 
+                      
+                      ? 
+
+                      <div className='image-container'>
+
+                            <img src={`${base_media_url}/${post.attachment}`} alt={post._id} />
+                      </div>
+
+                      : null
+                    
+                    }
 
                     <CreateComment  tweet = {post} ></CreateComment>
                 </div>
