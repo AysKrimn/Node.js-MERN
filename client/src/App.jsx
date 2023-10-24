@@ -15,7 +15,7 @@ import TweetDetail from './Pages/TweetDetail'
 
 // layouts
 import LoadData from './Layouts/LoadData'
-
+import Main_Layout from './Layouts/Main_Layout'
 
 
 
@@ -31,9 +31,15 @@ function App() {
             <Route element={<LoadData></LoadData>}>
 
 
-                    <Route path='/' element={<HomePage></HomePage>}></Route>
-                    <Route path='/tweets/:tweetId' element={<TweetDetail></TweetDetail>}></Route>
-                    <Route path='/test' element={<Test></Test>}></Route>
+                    {/* ana yapı */}
+                    <Route element={<Main_Layout></Main_Layout>}>
+
+                        <Route path='/' element={<HomePage></HomePage>}></Route>
+                        <Route path='/tweets/:tweetId' element={<TweetDetail></TweetDetail>}></Route>
+                        <Route path='/test' element={<Test></Test>}></Route>
+
+                    </Route>
+                 
                     <Route path='/login' element={<Login></Login>}></Route>
                     <Route path='/register' element={<Register></Register>}></Route>
 

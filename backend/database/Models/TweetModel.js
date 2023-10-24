@@ -22,7 +22,7 @@ const TweetSchema = new mongoose.Schema({
 
         type: String
     },
-
+    // relationship level database
     comments: [{
         type: mongoose.Schema.ObjectId,
         ref: "Comments"

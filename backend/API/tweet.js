@@ -4,7 +4,7 @@ const router = express.Router()
 
 // Schemas
 const TweetSchema = require('../database/Models/TweetModel')
-
+const CommentSchema = require('../database/Models/CommentModel')
 // resim depolama stretajisi
 const { useImageConfig, handleImageValidation } = require('../ImageService/handle_images')
 
@@ -68,6 +68,7 @@ router.get('/tweets/:tweetId', async (request, response) => {
 
 // güvenlik mekanizmasını aşağıdaki tüm endpointler için devreye sok
 router.use(getAccessToRoute)
+// bu route tweeti oluşturur
 router.post('/tweets/create', useImageConfig.single('attachment'), async (request, response) => {
 
     console.log("tweet oluşturma endpointinde user:", request.user)
@@ -81,6 +82,7 @@ router.post('/tweets/create', useImageConfig.single('attachment'), async (reques
 
             response.status(400).json({ message: "Tweet içeriği zorunludur."})
         }
+
 
         // tweet oluştur ancak henüz veritabanına kayıt etme
         const tweet = new TweetSchema({ author: request.user.user_id, content: content })
@@ -106,7 +108,7 @@ router.post('/tweets/create', useImageConfig.single('attachment'), async (reques
         // oluşturulan tweeti artık kaydet
         await tweet.save()
         
-        response.status(200).json({ data: tweet})
+        response.status(201).json({ data: tweet})
 
     } catch (error) {
         
@@ -114,6 +116,46 @@ router.post('/tweets/create', useImageConfig.single('attachment'), async (reques
         response.status(500).json({ message: "Bir hata meydana geldi lütfen daha sonra tekrar deneyiniz."})
     }
 
+})
+
+
+
+// bu route tweeti siler
+router.post('/tweets/:tweetId/delete', async (request, response) => {
+
+        try {
+
+            const tweet = await TweetSchema.findOne({ _id: request.params.tweetId })
+
+            if (tweet) {
+
+                // requesti yapan kişi postu yazan kişi ile aynı mı?
+                if (request.user._id != tweet.author._id) {
+
+                    response.status(403).json({ message: "Bu postu silmeye yetkin yok"})
+                }
+
+                
+                for await (const comment of tweet.comments) {
+                
+                    // comment şemasından eşleşen idli yorumu kaldır
+                    await CommentSchema.findByIdAndDelete(comment._id)
+
+                }
+         
+                // tweeti sil
+                await tweet.deleteOne()
+
+                return response.status(200).json("Tweet deleted")
+
+            } else {
+                // böyle bir tweet yoksa
+                return response.status(404).json({ message: "Böyle bir tweet bulunamadı."})
+            }
+            
+        } catch (error) {
+            
+        }
 })
 
 module.exports = router

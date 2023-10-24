@@ -8,6 +8,8 @@ import CreateComment from '../Components/CreateComment'
 import { AuthProvider } from '../Context/UserContext'
 import { base_api_url, base_media_url } from '../shared'
 import { Link } from 'react-router-dom'
+import Alert from 'react-bootstrap/Alert';
+import DeleteTweet from '../Components/DeleteTweet'
 
 
 // function
@@ -18,6 +20,7 @@ const create_string = () => {
 
 export default function HomePage() {
 
+  const [error, setError] = useState(false)
   const [posts, setPosts] = useState([])
 
   const { user } = useContext(AuthProvider)
@@ -26,11 +29,20 @@ export default function HomePage() {
 
       const get_all_tweets = async () => {
 
-          const request = await fetch(`${base_api_url}/tweets`)
-          const response = await request.json()
+          try {
 
-          console.log("GET ALL TWEETS:", response)
-          setPosts(response.data)
+            const request = await fetch(`${base_api_url}/tweets`)
+            const response = await request.json()
+  
+            console.log("GET ALL TWEETS:", response)
+            setPosts(response.data)
+            
+          } catch (error) {
+
+            setError(true)
+            
+          }
+  
 
       }
       // ateşle
@@ -60,13 +72,32 @@ export default function HomePage() {
 
       <div className="row">
 
+
+        {/* eğer sunucu ile bağlantı sağlanamamışsa */}
+        {
+          error ? <Alert variant={"danger"}>Sunucu ile bağlantı sağlanamadı.</Alert> : null
+
+        }
+
         {posts.map((post) => {
 
              return <div key={post._id} className="col-12 mb-5">
 
+                <div className="d-flex">
+
                 <Link to={`/tweets/${post._id}`}>
-                   <p>{create_string()}</p>
+                   {create_string()}
                 </Link>
+
+
+                {
+
+                  user !== null && user.user_id === post.author._id ? <DeleteTweet tweet = {post}></DeleteTweet> : null
+                }
+            
+
+                </div>
+              
           
                 <h3>{post.author.username}</h3>
 
@@ -88,7 +119,12 @@ export default function HomePage() {
                     
                     }
 
-                    <CreateComment  tweet = {post} ></CreateComment>
+                    
+                    {
+
+                      user !== null ? <CreateComment  tweet = {post} ></CreateComment> : null
+                    }
+                   
                 </div>
 
               </div>

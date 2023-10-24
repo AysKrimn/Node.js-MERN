@@ -55,6 +55,9 @@ export default function Login() {
     
 
 
+    <div className="container mt-5">
+
+
     <div className="w-50">
 
     <h3>Giriş Yap</h3>
@@ -94,7 +97,7 @@ export default function Login() {
 
     </div>
 
-    
+    </div>
     </>
   )
 }

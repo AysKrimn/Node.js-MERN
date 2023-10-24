@@ -47,7 +47,7 @@ function CreateTweetModal(props) {
     // modali kapat
     handleClose()
 
-    if (request.status === 200)   
+    if (request.status === 201)   
         window.location.reload()
 
 }
