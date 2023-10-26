@@ -47,6 +47,32 @@ rotuer.get("/decode", async (request, response) => {
 })
 
 
+/**
+ * İlgili userin detay sayfasını döndürür.
+ * @param {userName} name ilgili userin kullanıcı ismini temsil eder.
+ */
+
+rotuer.get('/users/:userName', async (request, response) => {
+
+        try {
+
+           const user = await UserSchema.findOne({ username: request.params.userName})
+
+           // user yoksa
+           if (user === null) {
+
+                return response.status(404).json({ message: "Böyle bir kullanıcı bulunamadı."})
+           }
+
+
+           response.status(200).json({ data: user})
+                
+        } catch (error) {
+                
+                response.status(500).json({ message: "Bir hata oluştu lütfen daha sonra tekrar deneyiniz."})
+        }
+})
+
 // BU router userleri giriş yaptırmak ile görevlidir.
 rotuer.post("/login", async (request, response) => {
 
@@ -149,6 +175,36 @@ rotuer.post("/register", async (request, response) => {
         }
 })
 
+
+
+// USER ROLE API 
+rotuer.post("/users/:userId/roles/promote", async (request, response) => {
+
+        try {
+            // userin gönderdiği rolü al
+            const { role } = request.body
+            const user = await UserSchema.findById({ _id: request.params.userId })
+
+            // eğer eklenmek istenen rol zaten usserde varsa
+           if (user.roles.includes(role)) {
+
+                return response.status(400).json({ message: "Bu user zaten o role sahip."})
+           }
+                
+           // yoksa
+           user.roles.push(role)
+           // veritabanına kaydet
+           await user.save()
+
+           response.status(201).json({ data: user })
+        } catch (error) {
+
+
+           response.status(500).json({ message: "Bir hata meydana geldi daha sonra tekrar deneyiniz."})
+                
+        }
+
+})
 
 
 

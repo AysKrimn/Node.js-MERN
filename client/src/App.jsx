@@ -10,12 +10,13 @@ import Login from './Pages/Login'
 import Test from './Pages/Test'
 import Register from './Pages/Register'
 import TweetDetail from './Pages/TweetDetail'
-
+import UserProfile from './Pages/UserProfile'
 
 
 // layouts
 import LoadData from './Layouts/LoadData'
 import Main_Layout from './Layouts/Main_Layout'
+
 
 
 
@@ -37,6 +38,7 @@ function App() {
                         <Route path='/' element={<HomePage></HomePage>}></Route>
                         <Route path='/tweets/:tweetId' element={<TweetDetail></TweetDetail>}></Route>
                         <Route path='/test' element={<Test></Test>}></Route>
+                        <Route path='/users/:userName' element={<UserProfile></UserProfile>}></Route>
 
                     </Route>
                  

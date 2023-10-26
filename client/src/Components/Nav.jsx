@@ -40,6 +40,11 @@ function Navbar() {
           
                 <Dropdown.Menu>
 
+                <Dropdown.Item>
+                        <Link to={`/users/${user.username}`}>Profilim</Link>
+                  </Dropdown.Item>
+
+
                   <Dropdown.Item>
                         <Link className='text-danger' to="?">Çıkış Yap</Link>
                   </Dropdown.Item>
