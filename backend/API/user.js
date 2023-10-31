@@ -177,7 +177,7 @@ rotuer.post("/register", async (request, response) => {
 
 
 
-// USER ROLE API 
+// USER ROLE API  (RTÜBE YÜKSELTME)
 rotuer.post("/users/:userId/roles/promote", async (request, response) => {
 
         try {
@@ -207,5 +207,36 @@ rotuer.post("/users/:userId/roles/promote", async (request, response) => {
 })
 
 
+// RÜTBE DÜŞÜRME
+rotuer.post("/users/:userId/roles/demote", async (request, response) => {
+
+
+
+        try {
+                // userin gönderdiği rolü al
+                const { role } = request.body
+                const user = await UserSchema.findById({ _id: request.params.userId })
+    
+                // eğer çıkarılmak istenen rol zaten usserde yoksa
+               if (!user.roles.includes(role)) {
+    
+                    return response.status(400).json({ message: "Bu user zaten o role sahip değil."})
+               }
+                    
+               // varsa
+               user.roles.pull(role)
+               // veritabanına kaydet
+               await user.save()
+    
+               response.status(201).json({ data: user })
+            } catch (error) {
+    
+    
+               response.status(500).json({ message: "Bir hata meydana geldi daha sonra tekrar deneyiniz."})
+                    
+            }
+
+
+})
 
 module.exports = rotuer

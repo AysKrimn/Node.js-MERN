@@ -10,6 +10,7 @@ import ModerationTool from '../Components/ModerationTool'
 
 // AUTH CONTEXT PROVIDER
 import { AuthProvider } from '../Context/UserContext'
+import TweetCard from '../Components/GUI/TweetCard'
 
 
 export default function TweetDetail() {
@@ -94,39 +95,7 @@ if (errors.error && errors.error === true) {
 
             <>
             
-                <div className="row">
-
-                     <div className="col-12">
-
-                                <div>
-
-                                    <h3>{tweet.author.username}</h3>
-                                    
-                                </div>
-
-                                    <div>
-                                        <p>{tweet.content}</p>
-                                    </div>
-
-                                    {  
-                    
-                                    tweet.attachment 
-                                    
-                                    ? 
-
-                                    <div className='image-container'>
-
-                                        <img src={`${base_media_url}/${tweet.attachment}`} alt={tweet._id} />
-                                    </div>
-
-                                    : null
-                                
-                                }
-
-                                    
-                    </div>
-
-                </div>
+                <TweetCard post = {tweet} user = {user} singleTweet = {true}></TweetCard>
 
 
                 <div className="row mt-5">

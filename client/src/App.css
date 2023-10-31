@@ -65,3 +65,11 @@ nav a.active::before {
     aspect-ratio: 1/1;
     object-fit: cover;
 }
+
+.tweetModel {
+
+    padding: 1rem;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+
+}
