@@ -9,6 +9,11 @@ const jwt = require('jsonwebtoken')
 // UserSchema
 const UserSchema = require('../database/Models/UserModel')
 
+// profileAvatarConfig 
+const { useProfileAvatarConfig, handleImageValidation } = require('../ImageService/handle_images')
+
+// yetkilendirme işlevi
+const { getAccessToRoute } = require('../authentication/decodeToken')
 
 // bu router tokeni çözer ve user bilgilerini cliente geri gönderir
 rotuer.get("/decode", async (request, response) => {
@@ -175,6 +180,46 @@ rotuer.post("/register", async (request, response) => {
         }
 })
 
+
+
+// AVATAR DEĞİŞTİRME 
+rotuer.post('/user/set/avatar', getAccessToRoute, useProfileAvatarConfig.single('avatar'), 
+async (request, response) => {
+
+        try {
+        
+        console.log("Dosya:", request.file)
+
+        if (!request.file) {
+
+                return response.status(400).json({ message: "Lütfen resim gönderin."})
+        }
+
+
+        const validFile = handleImageValidation(request.file)
+
+        if (!validFile) {
+
+                return response.status(400).json({ message: "Lütfen jpg, jpeg, png veya gif uzantılı dosya gönderin."})
+        }
+        
+        // useri bul ve kaydet
+        const user = await UserSchema.findOne({ _id: request.user.user_id})
+        user.avatar = request.file.path
+        // veritabanına kayıt et.
+        await user.save()
+
+        response.status(201).json({ message: "Avatar Changed"})
+
+        } catch (error) {
+
+        
+        console.log("Error at change avatar:", error)
+        response.status(500).json({ message: "Bir hata meydana geldi daha sonra tekrar deneyiniz."})
+                
+        }
+
+})
 
 
 // USER ROLE API  (RTÜBE YÜKSELTME)

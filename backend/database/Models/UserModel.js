@@ -30,6 +30,13 @@ const UserSchema = new mongoose.Schema({
         // ["User", "Admin"]
         // her usere varsayılan olarak bir rol ver
 
+    },
+
+
+    avatar: {
+
+        type: String,
+        default: "uploads/avatars/public/default-avatar.png"
     }
 
 })

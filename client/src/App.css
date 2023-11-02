@@ -73,3 +73,45 @@ nav a.active::before {
     border-radius: 8px;
 
 }
+
+
+.author-container {
+
+    display: flex;
+}
+
+.author-container .author-avatar {
+    width: 60px;
+}
+
+.author-container .author-username {
+
+    align-self: center;
+    padding-left: 11px;
+}
+
+
+.post-timespan {
+
+    align-self: center;
+    padding-left: 8px;
+    font-size: 13px;
+}
+
+.author-container .author-username a {
+
+    text-decoration: none;
+}
+
+.author-container .author-avatar img {
+
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.card-body .user-post {
+
+    padding-left: 4rem;
+}

@@ -43,12 +43,28 @@ export default function TweetCard(props) {
     </div>
   
 
-    <div className='author mt-2'>
-            <Link to={`/users/${post.author.username}`}>{post.author.username}</Link>
+    <div className='author-container mt-4'>
+
+            <div className='author-avatar'>
+                  <img src={`${base_media_url}/${post.author.avatar}`} alt={`${post.author.username}'in fotoğrafı`} />
+            </div>
+
+            <div className='author-username'>
+               <Link to={`/users/${post.author.username}`}>{post.author.username}</Link>
+            </div>
+
+
+            <div className='post-timespan'>
+
+                  <small className='text-muted'>{post.createdAt}</small>
+            </div>
+    
     </div>
 
 
     <div className='card-body'>
+
+        <div className="user-post">
         <p>{post.content}</p>
 
         {  
@@ -66,12 +82,16 @@ export default function TweetCard(props) {
         
         }
 
-        
+       
         {
 
           user !== null ? <CreateComment  tweet = {post} ></CreateComment> : null
         }
-       
+
+
+        </div>
+
+
     </div>
 
   </div>

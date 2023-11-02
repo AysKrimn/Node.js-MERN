@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { base_api_url } from '../shared'
+import { base_api_url, base_media_url } from '../shared'
 import { useParams } from 'react-router-dom'
 
 
 
 // components
 import HandleUserRank from '../Components/HandleUserRank'
+import ChangeUserAvatar from '../Components/ChangeUserAvatar'
 
 export default function UserProfile() {
 
@@ -84,7 +85,13 @@ export default function UserProfile() {
                         <h3 className='text-center'>{asTitle(userData.username)}</h3>
 
                         <div className='user-avatar-container'>
-                             <img src="../default-avatar.png" alt="user-avatar" />
+                             <img src={`${base_media_url}/${userData.avatar}`} alt="user-avatar" />
+
+
+                             <div className='text-center'>
+
+                                   <ChangeUserAvatar></ChangeUserAvatar>
+                             </div>
                         </div>
                        
 
