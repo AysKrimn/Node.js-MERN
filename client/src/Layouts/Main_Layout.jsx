@@ -1,5 +1,6 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
+import { sidebar_routes } from './LoadData'
 
 export default function Main_Layout() {
   return (
@@ -11,11 +12,15 @@ export default function Main_Layout() {
 
         <div className="col-2 left-side-bar">
 
-            <li>Dashboard</li>
-            <li>Trend</li>
-            <li>Profilim</li>
-            <li>Bildirim</li>
+            <ul className='side-bar-links'>
 
+        
+            {sidebar_routes.map((page, index) => {
+
+                return <li key={index}> <Link to={page.href}>{page.label}</Link> </li>
+            })}
+            
+            </ul>
         </div>
 
 

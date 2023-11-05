@@ -114,4 +114,43 @@ nav a.active::before {
 .card-body .user-post {
 
     padding-left: 4rem;
+    margin-left: 7px;
+}
+
+
+ul.side-bar-links {
+
+    list-style: none;
+}
+
+
+ul.side-bar-links li {
+
+    margin-bottom: 10px;
+    font-size: larger;
+
+}
+
+
+ul.side-bar-links li a {
+
+    text-decoration: none;
+}
+
+.card_navigator a {
+
+    text-decoration: none;
+}
+
+.nav-user {
+
+    background-color: transparent !important;
+}
+
+.nav-user img {
+
+    width: 40px;
+    object-fit: contain;
+    margin-right: 10px;
+    border-radius: 50%;
 }

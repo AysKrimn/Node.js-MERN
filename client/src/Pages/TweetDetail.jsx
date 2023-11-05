@@ -6,11 +6,11 @@ import { useParams } from 'react-router-dom'
 
 // Components
 import CreateComment from '../Components/CreateComment'
-import ModerationTool from '../Components/ModerationTool'
 
 // AUTH CONTEXT PROVIDER
 import { AuthProvider } from '../Context/UserContext'
 import TweetCard from '../Components/GUI/TweetCard'
+import CommentCard from '../Components/GUI/CommentCard'
 
 
 export default function TweetDetail() {
@@ -22,17 +22,6 @@ export default function TweetDetail() {
   const [errors, setErrors] = useState({})
   const { tweetId } = useParams()
 
-  // show tool
-  const handleModerationToolBox = (comment) => {
-        // eğer user anomimse çalışma
-        if (user === null) {
-            return;
-        }
-
-        if (comment.author._id === user.user_id ) {
-             return <ModerationTool tweetId = {tweet._id} commentId = {comment._id}></ModerationTool>
-        }
-  }
 
   useEffect(() => {
 
@@ -102,13 +91,7 @@ if (errors.error && errors.error === true) {
 
                 <div className='d-flex align-items-center'>
                      <h3>Yorumlar</h3>
-                  
-                     { 
 
-                        user !== null ?  <CreateComment tweet = {tweet}></CreateComment> : null
-                     
-                     }
-                    
                 </div>
                
                 <hr />
@@ -117,22 +100,7 @@ if (errors.error && errors.error === true) {
                 {/* yorumlar buraya gelecek */}
                 {tweet.comments.map((comment) => {
 
-                    return <div key={comment._id} className='col-12 mt-3'>
-
-                            <h3>{comment.author.username}</h3>
-                          
-                            <div className="card-body">
-
-                              
-                     
-
-                            <div className="d-flex align-items-center">
-                                 <p className='me-auto'>{comment.message}</p>
-                                 {handleModerationToolBox(comment)}
-                            </div>
-
-                         </div>
-                    </div>
+                    return <CommentCard user = {user} post = {tweet} comment = {comment} > </CommentCard>
 
 
                 })}

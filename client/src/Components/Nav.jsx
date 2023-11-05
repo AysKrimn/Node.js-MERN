@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { AuthProvider } from '../Context/UserContext';
 import { useContext } from 'react';
+import { base_media_url } from '../shared';
 
 
 
@@ -34,8 +35,12 @@ function Navbar() {
 
         :
             <Dropdown className='ms-auto ic-bosluk'>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                 {user.username}
+                <Dropdown.Toggle variant="success" id="dropdown-basic" className='nav-user'>
+
+                  <img src={`${base_media_url}/${user.user_avatar}`} alt="User Avatar" />
+
+                  <span>{user.username}</span>
+         
                 </Dropdown.Toggle>
           
                 <Dropdown.Menu>

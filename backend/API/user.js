@@ -102,6 +102,7 @@ rotuer.post("/login", async (request, response) => {
                         const passport = {
 
                           user_id: user._id,
+                          user_avatar: user.avatar,
                           username: user.username,
                           roles: user.roles,
                           email: user.email

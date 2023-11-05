@@ -9,6 +9,9 @@ router.post("/tweets/:tweetId/make/comment", async (request, response) => {
 
     // 652c3b08717e48c413502b5d
     try {
+
+        console.log("YORUMU YAPAN USER:", request.user)
+        
         const { message } = request.body
 
         // messaj paramaetresi gelmemişse

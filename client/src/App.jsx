@@ -12,6 +12,8 @@ import Register from './Pages/Register'
 import TweetDetail from './Pages/TweetDetail'
 import UserProfile from './Pages/UserProfile'
 
+// insant loading yerine lazy loading
+
 
 // layouts
 import LoadData from './Layouts/LoadData'

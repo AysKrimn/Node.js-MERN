@@ -5,7 +5,7 @@ import { base_api_url } from '../shared';
 
 
 
-
+import { BsChatDotsFill } from "react-icons/bs";
 
 function CreateComment(props) {
 
@@ -50,9 +50,9 @@ function CreateComment(props) {
 
   return (
     <>
-      <Button className='ms-auto btn btn-success' onClick={handleShow}>
-        Yorum Yap
-      </Button>
+      <button className='ms-auto btn btn-link' onClick={handleShow}>
+          <BsChatDotsFill size={25}></BsChatDotsFill>
+      </button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

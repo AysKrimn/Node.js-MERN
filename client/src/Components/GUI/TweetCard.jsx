@@ -4,9 +4,8 @@ import CreateComment from '../CreateComment'
 import { base_media_url } from '../../shared'
 import { Link } from 'react-router-dom'
 
-
-
-
+// İKONLAR
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 
 export default function TweetCard(props) {
 
@@ -17,8 +16,9 @@ export default function TweetCard(props) {
     const create_string = () => {
 
         if (singleTweet)
-            return;
-        return "---> Devamını okuyayayım"
+            return <Link to={`/`}> <BsArrowLeft color='blue' size={25}></BsArrowLeft> Geri Git </Link>
+
+        else return <Link to={`/tweets/${post._id}`}> <BsArrowRight color='blue' size={25}></BsArrowRight> Gönderiye Git</Link>
     }
 
 
@@ -27,12 +27,9 @@ export default function TweetCard(props) {
 
     <div key={post._id} className="col-12 mb-5 tweetModel">
 
-    <div className="d-flex">
+    <div className="d-flex align-items-center card_navigator">
 
-    <Link to={`/tweets/${post._id}`}>
-       {create_string()}
-    </Link>
-
+    {create_string()}
 
     {
 

@@ -13,6 +13,7 @@ import TweetCard from '../Components/GUI/TweetCard'
 
 
 
+
 export default function HomePage() {
 
   const [error, setError] = useState(false)
@@ -49,7 +50,8 @@ export default function HomePage() {
 
 
     <>
-    
+
+   
 
       <div className="d-flex align-items-center">
 

@@ -3,9 +3,15 @@ import { base_api_url } from '../shared'
 import { Outlet } from 'react-router-dom'
 
 
-
 // AuthProvider
 import { AuthProvider } from '../Context/UserContext'
+
+// Routes 
+export const sidebar_routes = [
+
+    { label: "Dashboard", href: "/" },
+   
+]
 
 export default function LoadData() {
 
@@ -30,6 +36,12 @@ export default function LoadData() {
 
                         // useri setle
                         setUser(response.data)
+                        
+                        // navalinkse ekle
+
+                        if (!sidebar_routes.includes({ label: "Profilim", href: `/users/${response.data.username}` }))
+                                    sidebar_routes.push({ label: "Profilim", href: `/users/${response.data.username}` })
+
                     } else if (request.status === 400) {
                         // 400 = invalid token
                         // tokeni kaldir

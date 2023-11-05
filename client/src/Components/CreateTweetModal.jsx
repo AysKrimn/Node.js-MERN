@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { base_api_url } from '../shared';
+import { BsPlusLg } from 'react-icons/bs';
 
 
 
@@ -57,7 +58,7 @@ function CreateTweetModal(props) {
   return (
     <>
       <Button className='ms-auto btn btn-success' onClick={handleShow}>
-        +
+          <BsPlusLg></BsPlusLg>
       </Button>
 
       <Modal show={show} onHide={handleClose}>

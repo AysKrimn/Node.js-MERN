@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { base_api_url } from '../shared';
+import { BsXLg } from 'react-icons/bs';
+
+
+
+
 
 export default function DeleteTweet(props) {
 
@@ -51,7 +56,7 @@ export default function DeleteTweet(props) {
   return (
     <>
     <button className="ms-auto btn btn-link text-danger" onClick={handleShow}>
-      Postu Sil
+    <BsXLg></BsXLg>
     </button>
 
     <Modal show={show} onHide={handleClose}>

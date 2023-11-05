@@ -12,13 +12,15 @@ const { useImageConfig, handleImageValidation } = require('../ImageService/handl
 const { getAccessToRoute } = require('../authentication/decodeToken')
 
 
+
+// tüm tweetleri döndürür
 router.get('/tweets', async (request, response) => {
 
     // veritabanı bağlantısı kur ve mevcut olan tüm tweetleri al
     try {
 
        // find boş bırakılırsa bütün verileri döndürür
-       const tweets = await TweetSchema.find({}).populate("author")
+       const tweets = await TweetSchema.find({}).populate("author").sort({ createdAt: -1 })
        response.status(200).json({ data: tweets })
 
     } catch (error) {
