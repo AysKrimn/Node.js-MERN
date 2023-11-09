@@ -10,7 +10,7 @@ import { base_api_url } from '../shared';
 function HandleUserRank(props) {
 
     
-  const { user } = props
+  const { targetUser } = props
 
   const [show, setShow] = useState(false);
   const [role, setRole] = useState("");
@@ -28,7 +28,7 @@ function HandleUserRank(props) {
     if (action === "Demote") 
        path = "demote"
       
-    let endpoint = `${base_api_url}/users/${user._id}/roles/${path}`
+    let endpoint = `${base_api_url}/users/${targetUser._id}/roles/${path}`
 
     const request = await fetch(`${endpoint}`, {
 
@@ -54,7 +54,8 @@ function HandleUserRank(props) {
       setError(response.message)
    } else if (request.status === 201) {
 
-      // reload at
+      // localdeki tokeni güncelle
+      window.localStorage.access_token = response.data
       window.location.reload()
    }
 

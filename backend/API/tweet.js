@@ -15,12 +15,27 @@ const { getAccessToRoute } = require('../authentication/decodeToken')
 
 // tüm tweetleri döndürür
 router.get('/tweets', async (request, response) => {
-
     // veritabanı bağlantısı kur ve mevcut olan tüm tweetleri al
     try {
+       const query = request.query.get;
+       console.log("GELEN QUERY:", query)
+       const maxData = 10;
 
+
+       let tweets;
        // find boş bırakılırsa bütün verileri döndürür
-       const tweets = await TweetSchema.find({}).populate("author").sort({ createdAt: -1 })
+
+       if (query && query === "all") {
+          // varsayılan temel istek atılmıştır, ilk 10 veriyi gönder
+          tweets = await TweetSchema.find({}).limit(maxData).populate("author").sort({ createdAt: -1 })
+       
+       } else if (query && Number(query)) {
+           // pagination isteği gelmiştir verileir hazirla
+           // maksimum gönderilecek veri
+           tweets = await TweetSchema.find({}).skip(query).limit(maxData).populate("author").sort({ createdAt: -1 })
+
+       }
+       
        response.status(200).json({ data: tweets })
 
     } catch (error) {

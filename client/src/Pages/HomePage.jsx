@@ -18,6 +18,8 @@ export default function HomePage() {
 
   const [error, setError] = useState(false)
   const [posts, setPosts] = useState([])
+  const [retrive, setRetrive] = useState("all")
+  const [text, setText] = useState({ class: "text text-primary", message: "Daha Fazla Tweet Yükle" })
 
   const { user } = useContext(AuthProvider)
 
@@ -27,11 +29,19 @@ export default function HomePage() {
 
           try {
 
-            const request = await fetch(`${base_api_url}/tweets`)
+            const request = await fetch(`${base_api_url}/tweets?get=${retrive}`)
             const response = await request.json()
   
             console.log("GET ALL TWEETS:", response)
-            setPosts(response.data)
+
+            if (!response.data.length) {
+
+              setText({...text, class: "text text-warning", message: "Keşfet bitmiş gibi görünüyor."})
+
+            } else {
+                setPosts([ ...posts, ...response.data ])
+            }
+        
             
           } catch (error) {
 
@@ -44,8 +54,22 @@ export default function HomePage() {
       // ateşle
       get_all_tweets()
 
-  }, [])
+  }, [retrive])
  
+
+  // infintyScroll
+  const handleInfintyScroll = (event) => {
+    
+      const { offsetHeight, scrollTop , scrollHeight } = event.target
+
+      console.log("Offset:", offsetHeight, "ScrollTop:", scrollTop, "ScrollHeight:", scrollHeight)
+      if (offsetHeight + scrollTop + 1 >= scrollHeight) {
+
+          // backend den bir 10 tweet daha getir
+          setRetrive(posts.length)
+      }
+  }
+
   return (
 
 
@@ -82,7 +106,10 @@ export default function HomePage() {
         })}
        
 
-
+        
+        <div className='text-center'>
+              <p onClick={handleInfintyScroll} className={text.class} style={{ display: "inline-block", cursor: "pointer"}}>{text.message}</p>
+        </div>
    
 
 

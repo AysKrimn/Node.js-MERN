@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { base_api_url, base_media_url } from '../shared'
 import { useParams } from 'react-router-dom'
 
@@ -7,8 +7,11 @@ import { useParams } from 'react-router-dom'
 // components
 import HandleUserRank from '../Components/HandleUserRank'
 import ChangeUserAvatar from '../Components/ChangeUserAvatar'
+import { AuthProvider } from '../Context/UserContext'
 
 export default function UserProfile() {
+
+    const { user, setUser } = useContext(AuthProvider)
 
     const [ userData, setUserData ] = useState(null)
     const [ error, setError] = useState("")
@@ -88,10 +91,16 @@ export default function UserProfile() {
                              <img src={`${base_media_url}/${userData.avatar}`} alt="user-avatar" />
 
 
+                            { user?.user_id === userData._id || user?.roles.includes('Admin')
+                              ? 
                              <div className='text-center'>
 
                                    <ChangeUserAvatar></ChangeUserAvatar>
                              </div>
+                             
+                               : 
+                               null
+                            }
                         </div>
                        
 
@@ -120,8 +129,11 @@ export default function UserProfile() {
                         </p>
 
 
-                        <HandleUserRank user = {userData}></HandleUserRank>
-
+                        {
+                          // eğer otourumdaki user admin değilse burayı göremesin 
+                          user?.roles.includes('Admin')  ? <HandleUserRank targetUser = {userData}></HandleUserRank> : null
+                        }
+                       
                         </div>
                         
                         

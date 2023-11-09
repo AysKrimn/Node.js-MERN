@@ -15,6 +15,24 @@ const { useProfileAvatarConfig, handleImageValidation } = require('../ImageServi
 // yetkilendirme işlevi
 const { getAccessToRoute } = require('../authentication/decodeToken')
 
+
+// update token
+const updateToken = (user = {}) => {
+
+        const passport = {
+
+                user_id: user._id,
+                user_avatar: user.avatar,
+                username: user.username,
+                roles: user.roles,
+                email: user.email
+                  
+              }
+              // tokeni güncelle
+              const token = jwt.sign(passport, process.env['TOKEN_KEY'])
+              return token
+}
+
 // bu router tokeni çözer ve user bilgilerini cliente geri gönderir
 rotuer.get("/decode", async (request, response) => {
 
@@ -224,13 +242,18 @@ async (request, response) => {
 
 
 // USER ROLE API  (RTÜBE YÜKSELTME)
-rotuer.post("/users/:userId/roles/promote", async (request, response) => {
+rotuer.post("/users/:userId/roles/promote", getAccessToRoute, async (request, response) => {
 
         try {
             // userin gönderdiği rolü al
             const { role } = request.body
             const user = await UserSchema.findById({ _id: request.params.userId })
 
+                // isteği yapan kişi admin mi?
+            if (!request.user.roles.includes("Admin")) {
+
+                return response.status(403).json({ message: "Bunu Yapmaya Yetkiniz Yok."})
+            }
             // eğer eklenmek istenen rol zaten usserde varsa
            if (user.roles.includes(role)) {
 
@@ -242,7 +265,10 @@ rotuer.post("/users/:userId/roles/promote", async (request, response) => {
            // veritabanına kaydet
            await user.save()
 
-           response.status(201).json({ data: user })
+           // tokenide güncelle
+           const updatedToken = updateToken(user)
+
+           response.status(201).json({ data: updatedToken })
         } catch (error) {
 
 
@@ -254,7 +280,7 @@ rotuer.post("/users/:userId/roles/promote", async (request, response) => {
 
 
 // RÜTBE DÜŞÜRME
-rotuer.post("/users/:userId/roles/demote", async (request, response) => {
+rotuer.post("/users/:userId/roles/demote", getAccessToRoute, async (request, response) => {
 
 
 
@@ -263,6 +289,11 @@ rotuer.post("/users/:userId/roles/demote", async (request, response) => {
                 const { role } = request.body
                 const user = await UserSchema.findById({ _id: request.params.userId })
     
+                // isteği yapan kişi admin mi?
+                if (!request.user.roles.includes("Admin")) {
+
+                     return response.status(403).json({ message: "Bunu Yapmaya Yetkiniz Yok."})
+                }
                 // eğer çıkarılmak istenen rol zaten usserde yoksa
                if (!user.roles.includes(role)) {
     
@@ -274,10 +305,14 @@ rotuer.post("/users/:userId/roles/demote", async (request, response) => {
                // veritabanına kaydet
                await user.save()
     
-               response.status(201).json({ data: user })
+               // tokenide güncelle
+               const updatedToken = updateToken(user)
+
+               response.status(201).json({ data: updatedToken })
+
             } catch (error) {
     
-    
+               console.log("DEMOTE ENDPONT:", error)
                response.status(500).json({ message: "Bir hata meydana geldi daha sonra tekrar deneyiniz."})
                     
             }
