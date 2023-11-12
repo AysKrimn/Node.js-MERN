@@ -84,7 +84,7 @@ if (errors.error && errors.error === true) {
 
             <>
             
-                <TweetCard post = {tweet} user = {user} singleTweet = {true}></TweetCard>
+                <TweetCard post = {tweet} user = {tweet.author} singleTweet = {true}></TweetCard>
 
 
                 <div className="row mt-5">

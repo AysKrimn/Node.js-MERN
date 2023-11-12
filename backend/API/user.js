@@ -8,6 +8,8 @@ const bcrpyt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 // UserSchema
 const UserSchema = require('../database/Models/UserModel')
+// tweetSchema
+const TweetSchema = require('../database/Models/TweetModel')
 
 // profileAvatarConfig 
 const { useProfileAvatarConfig, handleImageValidation } = require('../ImageService/handle_images')
@@ -78,6 +80,7 @@ rotuer.get("/decode", async (request, response) => {
 rotuer.get('/users/:userName', async (request, response) => {
 
         try {
+        
 
            const user = await UserSchema.findOne({ username: request.params.userName})
 
@@ -87,8 +90,13 @@ rotuer.get('/users/:userName', async (request, response) => {
                 return response.status(404).json({ message: "Böyle bir kullanıcı bulunamadı."})
            }
 
+ 
+           // tweetleri döndür
+           const tweets = await TweetSchema.find({ author: user._id }).populate('author')
 
-           response.status(200).json({ data: user})
+
+
+           response.status(200).json({ data: { user, tweets }})
                 
         } catch (error) {
                 
@@ -207,6 +215,8 @@ async (request, response) => {
 
         try {
         
+        const { user_id } = request.body;
+
         console.log("Dosya:", request.file)
 
         if (!request.file) {
@@ -223,12 +233,14 @@ async (request, response) => {
         }
         
         // useri bul ve kaydet
-        const user = await UserSchema.findOne({ _id: request.user.user_id})
+        const user = await UserSchema.findOne({ _id: user_id})
         user.avatar = request.file.path
         // veritabanına kayıt et.
         await user.save()
+        // tokeni güncelle 
+        const updatedToken = updateToken(user)
 
-        response.status(201).json({ message: "Avatar Changed"})
+        response.status(201).json({ data: updatedToken })
 
         } catch (error) {
 

@@ -8,8 +8,10 @@ import { useParams } from 'react-router-dom'
 import HandleUserRank from '../Components/HandleUserRank'
 import ChangeUserAvatar from '../Components/ChangeUserAvatar'
 import { AuthProvider } from '../Context/UserContext'
-
+import AuthGUI from '../Utils/AuthGUI'
+import TweetCard from '../Components/GUI/TweetCard'
 export default function UserProfile() {
+
 
     const { user, setUser } = useContext(AuthProvider)
 
@@ -85,22 +87,25 @@ export default function UserProfile() {
                         {/* avatar ve username */}
                         <div className="col-4">
 
-                        <h3 className='text-center'>{asTitle(userData.username)}</h3>
+                        <h3 className='text-center'>{asTitle(userData.user.username)}</h3>
 
                         <div className='user-avatar-container'>
-                             <img src={`${base_media_url}/${userData.avatar}`} alt="user-avatar" />
+                             <img src={`${base_media_url}/${userData.user.avatar}`} alt="user-avatar" />
 
 
-                            { user?.user_id === userData._id || user?.roles.includes('Admin')
-                              ? 
+                
                              <div className='text-center'>
 
-                                   <ChangeUserAvatar></ChangeUserAvatar>
+                                   {/* <ChangeUserAvatar></ChangeUserAvatar> */}
+                                   <AuthGUI 
+                                            sessionId = {user?.user_id} 
+                                            userId = {userData.user._id} 
+                                            label = "edit_user_avatar">
+                                   </AuthGUI>
+                       
                              </div>
                              
-                               : 
-                               null
-                            }
+                    
                         </div>
                        
 
@@ -114,25 +119,22 @@ export default function UserProfile() {
                         <hr />
                             
                         <p>
-                           <b>GU-ID:</b> {userData._id}
+                           <b>GU-ID:</b> {userData.user._id}
                         </p>
 
                         <p>
-                            <b>E-mail:</b> {userData.email}
+                            <b>E-mail:</b> {userData.user.email}
                         </p>
 
 
                         <div className='d-flex align-items-center'>
 
                         <p style={{margin: 0}}>
-                            <b>Kullanıcı Rolleri:</b> {userData.roles.join(', ')}
+                            <b>Kullanıcı Rolleri:</b> {userData.user.roles.join(', ')}
                         </p>
 
 
-                        {
-                          // eğer otourumdaki user admin değilse burayı göremesin 
-                          user?.roles.includes('Admin')  ? <HandleUserRank targetUser = {userData}></HandleUserRank> : null
-                        }
+                        <AuthGUI label = "edit_user_rank"> </AuthGUI>
                        
                         </div>
                         
@@ -147,9 +149,15 @@ export default function UserProfile() {
 
                 <div className="col-12">
 
-                <h3>{userData.username} adlı kullanıcının tweetleri</h3>
+                <h3>{userData.user.username} adlı kullanıcının tweetleri ({userData.tweets.length})</h3>
                 <hr />
 
+
+                {userData.tweets.map((tweet) => {
+
+                    return <TweetCard key = {tweet._id} post = {tweet} user = {tweet.author}></TweetCard>
+
+                })}
 
                 </div>
 

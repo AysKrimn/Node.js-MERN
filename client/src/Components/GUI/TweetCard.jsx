@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 // İKONLAR
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import AuthGUI from '../../Utils/AuthGUI'
 
 export default function TweetCard(props) {
 
@@ -31,11 +32,13 @@ export default function TweetCard(props) {
 
     {create_string()}
 
-    {
+    {/* {
 
       user !== null && user.user_id === post.author._id ? <DeleteTweet tweet = {post}></DeleteTweet> : null
-    }
+    } */}
 
+     {console.log("GLEEN USER.USER_İD PROPS:", user._id)}
+    <AuthGUI tweet = {post} userId={user?._id} label = "delete_tweet"></AuthGUI>
 
     </div>
   

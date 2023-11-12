@@ -8,6 +8,7 @@ import { base_api_url } from '../shared'
 
 import Alert from 'react-bootstrap/Alert';
 import TweetCard from '../Components/GUI/TweetCard'
+import AuthGUI from '../Utils/AuthGUI';
 
 
 
@@ -81,9 +82,8 @@ export default function HomePage() {
 
       <h3>Tweets</h3>
 
-      {
-        user !== null ? <CreateTweetModal user = {user} ></CreateTweetModal> : null
-      }
+
+      <AuthGUI label = "create_tweet"></AuthGUI>
       
 
       </div>
@@ -101,8 +101,8 @@ export default function HomePage() {
         }
 
         {posts.map((post) => {
-
-             return <TweetCard post={post} user = {user} ></TweetCard>
+          
+             return <TweetCard post={post} user = {post.author} ></TweetCard>
         })}
        
 

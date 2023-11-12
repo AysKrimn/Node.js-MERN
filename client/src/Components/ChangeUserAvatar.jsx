@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { base_api_url } from '../shared';
+import { updateToken } from '../Utils/UpdateToken';
 
 
-export default function ChangeUserAvatar() {
+export default function ChangeUserAvatar(props) {
+
+    const { userId, sessionId } = props
     const [show, setShow] = useState(false);
     const [file, setFile] = useState("")
 
@@ -22,6 +25,7 @@ export default function ChangeUserAvatar() {
         const uploadedFile = new FormData()
         // resimleride gönder
         uploadedFile.append("avatar", file)
+        uploadedFile.append("user_id", userId)
 
         const request = await fetch(event.target.action, {
 
@@ -40,6 +44,8 @@ export default function ChangeUserAvatar() {
 
         if (request.status === 201) {
 
+
+            if (sessionId === userId) updateToken(response.data)
             window.location.reload()
         } else {
 
