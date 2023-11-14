@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 const handleEmail = (user = {}, verificationKey=0) => {
 
     transporter.sendMail({
-        from: 'nodejstest0@gmail.com', // sender address
+        from: process.env['EMAIL_USER'], // sender address
         to: user.email, // list of receivers
         subject: "Doğrulama İşlemi", // Subject line
         text: `Bizi tercih ettiğiniz için teşekkürler doğrulama kodunuz: ${verificationKey}`, // plain text body
