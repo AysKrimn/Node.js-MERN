@@ -3,13 +3,10 @@ import { base_api_url, base_media_url } from '../shared'
 import { useParams } from 'react-router-dom'
 
 
-
-// components
-import HandleUserRank from '../Components/HandleUserRank'
-import ChangeUserAvatar from '../Components/ChangeUserAvatar'
 import { AuthProvider } from '../Context/UserContext'
 import AuthGUI from '../Utils/AuthGUI'
 import TweetCard from '../Components/GUI/TweetCard'
+import DeleteUserAccount from '../Components/GUI/DeleteUserAccount'
 export default function UserProfile() {
 
 
@@ -34,6 +31,8 @@ export default function UserProfile() {
              // başarılı ise
              } else if (request.status === 200) {
                 setUserData(response.data)
+                document.title = `Profil - ${response.data.user.username}`
+
              }
             } catch (error) {
                 
@@ -137,7 +136,16 @@ export default function UserProfile() {
                         <AuthGUI label = "edit_user_rank"> </AuthGUI>
                        
                         </div>
-                        
+
+                        {
+
+                            user && user?.user_id === userData.user._id || user?.roles.includes('Admin')
+                            ?    
+                            <DeleteUserAccount userId = {userData.user._id} ></DeleteUserAccount>
+                            : 
+                                null
+                        }
+                 
                         
                         </div>
                 </div>

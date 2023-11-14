@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { base_api_url } from '../shared'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 
 
 // AuthProvider
@@ -18,7 +18,9 @@ export default function LoadData() {
     const [loading, setLoading] = useState(true)
     const { setUser } = useContext(AuthProvider)
 
+    const pageURL = useLocation()
 
+    
     useEffect(() => {
 
         const create_api_request = async () => {
@@ -42,6 +44,19 @@ export default function LoadData() {
                         if (!sidebar_routes.includes({ label: "Profilim", href: `/users/${response.data.username}` }))
                                     sidebar_routes.push({ label: "Profilim", href: `/users/${response.data.username}` })
 
+
+                        // eğer elemanın hesabı doğrulanmamışsa ve dashboard, profil vs sayfalarındaysa
+                        // verify ekranına yönlendir.
+                        if (response.data.verified !== true) {
+
+                                
+                            if (window.location.pathname !== "/verify") {
+
+                                window.location.href = "/verify"
+                            }
+                            
+                        }
+
                     } else if (request.status === 400) {
                         // 400 = invalid token
                         // tokeni kaldir
@@ -60,7 +75,7 @@ export default function LoadData() {
         // ateşle
         create_api_request()
 
-    }, [])
+    }, [pageURL.pathname])
 
 
     if (loading) {

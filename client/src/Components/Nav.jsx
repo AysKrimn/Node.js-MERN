@@ -52,7 +52,7 @@ function Navbar() {
 
 
                   <Dropdown.Item>
-                        <Link className='text-danger' to="?">Çıkış Yap</Link>
+                        <Link className='text-danger' to="/logout">Çıkış Yap</Link>
                   </Dropdown.Item>
                  
                 </Dropdown.Menu>

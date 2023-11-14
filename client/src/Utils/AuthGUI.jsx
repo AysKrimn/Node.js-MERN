@@ -4,6 +4,7 @@ import { AuthProvider } from '../Context/UserContext'
 import HandleUserRank from '../Components/HandleUserRank'
 import DeleteTweet from '../Components/DeleteTweet'
 import CreateTweetModal from '../Components/CreateTweetModal'
+import DeleteUserAccount from '../Components/GUI/DeleteUserAccount'
 
 
 
@@ -14,6 +15,7 @@ export default function AuthGUI(props) {
   const { user } = useContext(AuthProvider)
   const { tweet, userId, sessionId, label } = props
 
+
   // sessionId = güncel oturumdaki userin idsine eşittir
   // userId ise ilgili kişinin idsine eşittir (tweet yazarının idsi vs)
 
@@ -23,7 +25,19 @@ export default function AuthGUI(props) {
   // user.roles'ün bir tane kopyasını al
   const userRoles = [...user.roles]
 
-  const GUIS = [
+
+
+
+  if (sessionId === user.user_id) {
+
+        userRoles.push("Self")
+  }
+
+
+  useEffect(() => {
+
+    console.log("GELEN USERID:", userId)
+    const GUIS = [
 
         {
             label: "edit_user_avatar",
@@ -44,23 +58,18 @@ export default function AuthGUI(props) {
             allowed: ["Admin", "Self"]
         },
 
+        // {
+        //     label: "delete_user_account",
+        //     element: <DeleteUserAccount userId = {userId}></DeleteUserAccount>,
+        //     allowed: ["Admin", "Self"]
+        // },
+
         {
             label: "create_tweet",
             element: <CreateTweetModal user = {user}></CreateTweetModal>,
             allowed: ["User"]
         }
-  ]
-
-
-  console.log("userId:", userId)
-  console.log("context userId", user.user_id)
-  if (userId === user.user_id) {
-
-        userRoles.push("Self")
-  }
-
-
-  useEffect(() => {
+        ]
 
         const isAuthenticated = GUIS.find((gui) => gui.label === label && gui.allowed.some((role => userRoles.includes(role))))
 

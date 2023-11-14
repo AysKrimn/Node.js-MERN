@@ -28,6 +28,8 @@ export default function HomePage() {
 
       const get_all_tweets = async () => {
 
+          document.title = "Dashboard"
+          
           try {
 
             const request = await fetch(`${base_api_url}/tweets?get=${retrive}`)

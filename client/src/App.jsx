@@ -18,11 +18,16 @@ import UserProfile from './Pages/UserProfile'
 // layouts
 import LoadData from './Layouts/LoadData'
 import Main_Layout from './Layouts/Main_Layout'
+import Logout from './Pages/Logout.jsx'
+import { useEffect } from 'react'
+import VerifyAccount from './Pages/VerifyAccount.jsx'
 
 
 
 
 function App() {
+
+
 
   return (
     <>
@@ -45,7 +50,9 @@ function App() {
                     </Route>
                  
                     <Route path='/login' element={<Login></Login>}></Route>
+                    <Route path='/logout' element={<Logout></Logout>}></Route>
                     <Route path='/register' element={<Register></Register>}></Route>
+                    <Route path='/verify' element={<VerifyAccount></VerifyAccount>}></Route>
 
             </Route>
 

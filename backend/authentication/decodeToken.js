@@ -17,6 +17,7 @@ const getAccessToRoute = (request, response, next) => {
 
     console.log("TOKEEEN:", token)
     request.user = decoded_user
+    request.token = token
     next()
 
     } catch(error) {

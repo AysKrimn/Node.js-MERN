@@ -4,9 +4,6 @@ import { useParams } from 'react-router-dom'
 
 
 
-// Components
-import CreateComment from '../Components/CreateComment'
-
 // AUTH CONTEXT PROVIDER
 import { AuthProvider } from '../Context/UserContext'
 import TweetCard from '../Components/GUI/TweetCard'

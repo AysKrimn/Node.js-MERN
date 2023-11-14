@@ -11,12 +11,17 @@ const UserSchema = require('../database/Models/UserModel')
 // tweetSchema
 const TweetSchema = require('../database/Models/TweetModel')
 
+// veriyschema
+const VerifySchema = require('../database/Models/verification')
+
 // profileAvatarConfig 
 const { useProfileAvatarConfig, handleImageValidation } = require('../ImageService/handle_images')
 
 // yetkilendirme işlevi
 const { getAccessToRoute } = require('../authentication/decodeToken')
 
+// email servis
+const { handleEmail } = require('../EmailService/connector')
 
 // update token
 const updateToken = (user = {}) => {
@@ -125,13 +130,24 @@ rotuer.post("/login", async (request, response) => {
 
                         // useri login et
                         // passaportla
+                        // user hesabını doğrılamış mı?
+                        let verified = false;
+
+                        const isVerified = await VerifySchema.findOne({ user: user._id})
+
+                        if (isVerified) {
+                                
+                            verified = true;
+                        }
+
                         const passport = {
 
                           user_id: user._id,
                           user_avatar: user.avatar,
                           username: user.username,
                           roles: user.roles,
-                          email: user.email
+                          email: user.email,
+                          verified: verified
                             
                         }
                         // gecis izni ver
@@ -185,7 +201,14 @@ rotuer.post("/register", async (request, response) => {
                                 password: cryptPassword
                         })
 
+
+                        // usere email at
+                        const verifyKey = Math.floor(Math.random() * 9000)
+
+                        // onaylama kodu oluştur
+                        await VerifySchema.create({ user: user._id, code: verifyKey})
                         
+                        handleEmail(user, verifyKey)
                         // user oluştu frontende haber ver
                         return response.status(200).json({ message: "Hesap Oluştu", data: user })
 
@@ -208,6 +231,32 @@ rotuer.post("/register", async (request, response) => {
 })
 
 
+// USER HESABI SİL
+rotuer.post('/user/account/delete', getAccessToRoute, async (request, response) => {
+
+        try {
+
+            // hesabı sil.
+            const { user_id } = request.body
+        
+            // tüm tweetleri sil
+            const user_tweets = await TweetSchema.find({ author: user_id })
+
+            for await (const tweet of user_tweets) {
+                
+                await tweet.deleteOne()
+            }
+
+            await UserSchema.findByIdAndDelete({ _id: user_id })
+
+            response.status(201).json({ data: request.token})
+                
+        } catch (error) {
+                
+            response.status(500).json({ message: "Hesabı silerken bir hata meydana geldi lütfen daha sonra tekrar deneyiniz."})
+        }
+
+})
 
 // AVATAR DEĞİŞTİRME 
 rotuer.post('/user/set/avatar', getAccessToRoute, useProfileAvatarConfig.single('avatar'), 
